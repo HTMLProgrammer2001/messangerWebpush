@@ -14,29 +14,29 @@ jobs:
             CI: ""
         runs-on: ubuntu-latest
         steps:
-            -  name: Checkout
-               uses: actions/checkout@v2.3.1
-               with:
-                   persistent-credentials: false
+            -   name: Checkout
+                uses: actions/checkout@v2.3.1
+                with:
+                    persistent-credentials: false
 
-            - name: Build image
-              run: docker build -t messanger/weboush:prod.${{github.sha}} .
+            -   name: Build image
+                run: docker build -t messanger/webpush:prod.${{github.sha}} .
 
-            - name: Push to ecr
-              uses: jwalton/gh-ecr-push@v1
-              with:
-                  access-key-id: ${{ secrets.AWS_ACCESS }}
-                  secret-access-key: ${{ secrets.AWS_SECRET }}
-                  region: eu-central-1
-                  local-image: messanger/webpush:prod.${{github.sha}}
-                  is-semver: true
-                  image: messanger/webpush
+            -   name: Push to ecr
+                uses: jwalton/gh-ecr-push@v1
+                with:
+                    access-key-id: ${{ secrets.AWS_ACCESS }}
+                    secret-access-key: ${{ secrets.AWS_SECRET }}
+                    region: eu-central-1
+                    local-image: messanger/webpush:prod.${{github.sha}}
+                    is-semver: true
+                    image: messanger/webpush
 
-            - name: Deploy
-              uses: ItsKarma/aws-cli@v1.70.0
-              with:
-                args: elasticbeanstalk restart-app-server --environment-name Messanger-env
-              env:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
-                AWS_DEFAULT_REGION: "eu-central-1"
+            -   name: Deploy
+                uses: ItsKarma/aws-cli@v1.70.0
+                with:
+                    args: elasticbeanstalk restart-app-server --environment-name Messanger-env
+                env:
+                    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS }}
+                    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+                    AWS_DEFAULT_REGION: "eu-central-1"
