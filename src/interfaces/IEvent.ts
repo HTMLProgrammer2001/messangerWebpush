@@ -1,4 +1,5 @@
-export interface IEvent<T> {
-	getType(): string,
-	getData(): T
+export interface IEvent {
+	type: string,
+	to: string,
+	data: string
 }

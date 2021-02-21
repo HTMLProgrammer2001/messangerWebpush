@@ -1,11 +1,24 @@
-import {connect} from 'mongodb';
+import {connect, MongoClient} from 'mongodb';
 
 
-const connectDB = async (url: string) => {
+let client: MongoClient = null;
+
+export const getConnection = async (url?: string) => {
+	if(client)
+		return client;
+
 	if(!url)
 		throw new Error('No URL for db connection');
 
-	return connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-};
+	try{
+		client = await new Promise((resolve, reject) => {
+			connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true},
+				(err, connect) => err ? reject(err) : resolve(connect));
+		});
 
-export default connectDB;
+		return client;
+	}
+	catch (e) {
+		throw new Error(e);
+	}
+};

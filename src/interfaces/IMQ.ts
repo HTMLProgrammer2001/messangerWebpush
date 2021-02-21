@@ -6,5 +6,5 @@ export interface IMQ {
 	connect(): Promise<void>,
 	addObserver(observer: IObserver): void,
 	deleteObserver(observer: IObserver): void,
-	notify(event: IEvent<any>): Promise<any>
+	notify(event: IEvent): Promise<any>
 }
